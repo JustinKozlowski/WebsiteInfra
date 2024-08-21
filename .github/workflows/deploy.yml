@@ -34,7 +34,7 @@ jobs:
         echo "$SSH_PRIVATE_KEY" > private_key.pem
         chmod 600 private_key.pem
         ssh -o StrictHostKeyChecking=no -i private_key.pem $REMOTE_USER@$REMOTE_HOST << 'EOF'
-          cd /var/www/${{ github.event.repository.name }}
+          cd /var/www/WebsiteInfra
           docker compose down
           docker compose up -d --build
         EOF
