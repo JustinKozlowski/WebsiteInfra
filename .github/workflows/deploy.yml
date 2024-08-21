@@ -1,0 +1,40 @@
+name: Deploy FastAPI and Svelte app
+
+on:
+  push:
+    branches:
+      - main  # or the branch you want to deploy from
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Copy to Remote VM
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        REMOTE_HOST: ${{ vars.REMOTE_HOST }}
+        REMOTE_USER: ${{ vars.REMOTE_USER }}
+      run: |
+        echo "$SSH_PRIVATE_KEY" > private_key.pem
+        chmod 600 private_key.pem
+        rm -r .git
+        scp -o StrictHostKeyChecking=no -i private_key.pem -r $(pwd) $REMOTE_USER@$REMOTE_HOST:/var/www
+        echo "Copied infra"
+          
+    - name: Run on Remote VM
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        REMOTE_HOST: ${{ vars.REMOTE_HOST }}
+        REMOTE_USER: ${{ vars.REMOTE_USER }}
+      run: |
+        echo "$SSH_PRIVATE_KEY" > private_key.pem
+        chmod 600 private_key.pem
+        ssh -o StrictHostKeyChecking=no -i private_key.pem $REMOTE_USER@$REMOTE_HOST << 'EOF'
+          cd /var/www/${{ github.event.repository.name }}
+          docker compose down
+          docker compose up -d --build
+        EOF
