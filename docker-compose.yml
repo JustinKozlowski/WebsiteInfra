@@ -30,19 +30,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     network_mode: bridge
 
-  app:
-    build: .
-    environment:
-      - VIRTUAL_HOST=www.justinkozlowski.me
-      - LETSENCRYPT_HOST=www.justinkozlowski.me
-      - LETSENCRYPT_EMAIL=contact@justinkozlowski.me
-    restart: always
-    volumes:
-      - .:/app
-    ports:
-      - "8000:8000"
-    network_mode: bridge
-
 volumes:
   vhost:
   conf:
