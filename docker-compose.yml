@@ -42,7 +42,7 @@ services:
       - GOOGLE_GEMINI_API_KEY
     env_file:
       - .env
-    command: /bin/bash -c "envsubst '$GOOGLE_GEMINI_API_KEY' < /etc/nginx/conf.d/default.conf > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+    command: /bin/bash -c "envsubst '$GOOGLE_GEMINI_API_KEY' < /etc/nginx/conf.d/default.conf > /etc/nginx/conf.d/default-substituted.conf && nginx -c /etc/nginx/conf.d/default-substituted.conf -g 'daemon off;'"
     network_mode: bridge
 
 volumes:
