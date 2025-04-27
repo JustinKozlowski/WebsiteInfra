@@ -39,6 +39,10 @@ services:
       - ./nginx-gemini/nginx.conf:/etc/nginx/nginx.conf
       - ./nginx-gemini/conf.d:/etc/nginx/conf.d
     environment:
+      - VIRTUAL_HOST=www.justinkozlowski.me
+      - LETSENCRYPT_HOST=www.justinkozlowski.me
+      - LETSENCRYPT_EMAIL=contact@justinkozlowski.me
+      - VIRTUAL_PATH=/gemini
       - GOOGLE_GEMINI_API_KEY
     env_file:
       - .env
