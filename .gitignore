@@ -1,0 +1,2 @@
+.env
+nginx-gemini/conf.d/default.conf
