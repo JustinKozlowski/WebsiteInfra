@@ -1,4 +1,4 @@
-name: Deploy FastAPI and Svelte app
+name: Deploy WebsiteInfra
 
 on:
   push:
@@ -23,6 +23,10 @@ jobs:
         chmod 600 private_key.pem
         rm -r .git
         scp -o StrictHostKeyChecking=no -i private_key.pem -r $(pwd) $REMOTE_USER@$REMOTE_HOST:/var/www
+        ssh -o StrictHostKeyChecking=no -i private_key.pem $REMOTE_USER@$REMOTE_HOST << 'EOF'
+          cd /var/www/${{ github.event.repository.name }}
+          rm private_key.pem
+        EOF
         echo "Copied infra"
           
     - name: Run on Remote VM
