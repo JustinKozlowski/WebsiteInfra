@@ -30,26 +30,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     network_mode: bridge
 
-  nginx-gemini:
-    image: nginx:latest
-    container_name: nginx-gemini-service
-    ports:
-      - "8080:80"
-    volumes:
-      - ./nginx-gemini/nginx.conf:/etc/nginx/nginx.conf
-      - ./nginx-gemini/conf.d:/etc/nginx/conf.d
-      - ./entrypoint.sh:/entrypoint.sh
-    environment:
-      - VIRTUAL_HOST=www.justinkozlowski.me
-      - LETSENCRYPT_HOST=www.justinkozlowski.me
-      - LETSENCRYPT_EMAIL=contact@justinkozlowski.me
-      - VIRTUAL_PATH=/gemini
-      - GOOGLE_GEMINI_API_KEY
-    env_file:
-      - .env
-    command: /bin/bash /entrypoint.sh
-    network_mode: bridge
-
 volumes:
   vhost:
   conf:
